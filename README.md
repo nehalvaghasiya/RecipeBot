@@ -13,6 +13,8 @@
 ## Overview
 RecipeBot is an AI-driven chatbot that generates personalized recipes based on user preferences and dietary requirements. Powered by OpenAI's GPT and built with the Streamlit framework, the bot engages users in a series of questions to understand their preferences and dietary needs, and then crafts a unique recipe tailored just for them. This is achieved using a sequence of prompts that leverage the language model's capabilities in creating questions and evaluating responses.
 
+https://github.com/nehalvaghasiya/RecipeBot/assets/78668871/ab2be559-6d7f-48d5-99d7-9de198dcd953
+
 
 
 ## Technical Aspect
