@@ -1,17 +1,20 @@
 # RecipeBot - AI Recipe Generation Chatbot
-## Table of Content
 
-- Overview
-- Technical Aspect
-- Performance Metrics
-- Installation
-- Troubleshooting
-- Directory Tree
-- Bug / Feature Request
-- Technologies Used
+## Table of Contents
+
+- [Overview](#overview)
+- [Technical Aspect](#technical-aspect)
+- [Performance Metrics](#performance-metrics)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Directory Structure](#directory-structure)
+- [Troubleshooting](#troubleshooting)
+- [Bug / Feature Request](#bug--feature-request)
+- [Technologies Used](#technologies-used)
 
 ## Overview
-RecipeBot is an AI-driven chatbot that generates personalized recipes based on user preferences and dietary requirements. Powered by OpenAI's GPT and built with the Streamlit framework, the bot engages users in a series of questions to understand their preferences and dietary needs, and then crafts a unique recipe tailored just for them. This is achieved using a sequence of prompts that leverage the language model's capabilities in creating questions and evaluating responses.
+RecipeBot is an AI-driven chatbot that generates personalized recipes based on user preferences and dietary requirements. Powered by OpenAI's GPT models (default: gpt-4o-mini) and built with the Streamlit framework, the bot engages users in a series of questions to understand their preferences and dietary needs, and then crafts a unique recipe tailored just for them. This is achieved using a sequence of prompts that leverage the language model's capabilities in creating questions and evaluating responses.
 
 https://github.com/nehalvaghasiya/RecipeBot/assets/78668871/ab2be559-6d7f-48d5-99d7-9de198dcd953
 
@@ -104,72 +107,140 @@ The performance of RecipeBot is assessed based on several key criteria, each rat
 
 ## Installation
 
-The installation steps are different for different OS.
+This project uses [uv](https://docs.astral.sh/uv/) for dependency management. If you don't have uv installed, follow the installation instructions at https://docs.astral.sh/uv/getting-started/installation/
 
-### Linux:
+### Quick Start
 
+1. **Clone the repository**
 ```bash
-python3.8 --version
-apt install python3.8-venv
-python3 -m venv myenv
-source myenv/bin/activate
-pip install -r requirements.txt
-export OPENAI_API_KEY=<your secret key>
-streamlit run chatbot.py
+git clone https://github.com/nehalvaghasiya/RecipeBot.git
+cd RecipeBot
 ```
 
-### Windows:
+2. **Set up environment variables**
 
+Copy the example environment file and add your OpenAI API key:
 ```bash
-python3.8 -m venv myenv
-myenv\Scripts\activate
-pip install -r requirements.txt
-export OPENAI_API_KEY=<your secret key>
-streamlit run chatbot.py
+cp .env.example .env
 ```
 
-### Mac:
-
-```bash
-python3.8 -m venv myenv
-source myenv/bin/activate
-pip install -r requirements.txt
-export OPENAI_API_KEY=<your secret key>
-streamlit run chatbot.py
+Edit `.env` and replace `your_api_key_here` with your actual OpenAI API key:
+```
+OPENAI_API_KEY=sk-your-actual-api-key-here
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_MODEL=gpt-4o-mini
 ```
 
-Remember to replace `<your secret key>` with your actual OpenAI API Key.
+3. **Run the application**
 
+Using uv (recommended):
+```bash
+uv run streamlit run src/chatbot.py
+```
+
+This will automatically create a virtual environment, install dependencies, and start the Streamlit server.
+
+### Alternative Installation Methods
+
+#### Using pip with virtual environment
+
+**Linux/Mac:**
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+streamlit run src/chatbot.py
+```
+
+**Windows:**
+```bash
+python3 -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+streamlit run src/chatbot.py
+```
+
+## Usage
+
+Once the application is running, it will automatically open in your default web browser (usually at http://localhost:8501).
+
+The chatbot will:
+1. Greet you and explain its purpose
+2. Ask you 6 questions about your dietary preferences:
+   - Dietary restrictions or preferences
+   - Cuisine type preference
+   - Specific ingredients to use or avoid
+   - Meal complexity (quick vs elaborate)
+   - Nutritional needs or goals
+   - Side dish, beverage, or dessert preferences
+3. Generate a personalized recipe based on your answers
+4. Provide an evaluation of potential biases in the recipe
+5. Display performance metrics for the generated recipe
+
+## Configuration
+
+The application can be configured through environment variables in the `.env` file:
+
+- `OPENAI_API_KEY`: Your OpenAI API key (required)
+- `OPENAI_BASE_URL`: OpenAI API base URL (default: https://api.openai.com/v1)
+- `OPENAI_MODEL`: The OpenAI model to use (default: gpt-4o-mini)
+
+Available models include:
+- `gpt-4o-mini` (default, cost-effective)
+- `gpt-4o` (more capable, higher cost)
+- `gpt-3.5-turbo` (faster, lower cost)
+
+You can also modify the prompts and questions in `src/config.py`.
+
+
+## Directory Structure
+```
+RecipeBot/
+├── src/
+│   ├── chatbot.py           # Main Streamlit application
+│   ├── config.py            # Configuration and prompts
+│   ├── utils.py             # Utility functions for OpenAI API
+│   └── RecipeBot.egg-info/  # Package metadata
+├── tests/
+│   └── test_placeholder.py  # Test files
+├── devtools/
+│   └── lint.py              # Linting utilities
+├── images/
+│   ├── openai.png          # OpenAI logo
+│   └── streamlit.jpg       # Streamlit logo
+├── .env.example             # Example environment variables
+├── .gitignore              # Git ignore file
+├── LICENSE                 # MIT License
+├── README.md               # This file
+├── pyproject.toml          # Project configuration and dependencies
+├── requirements.txt        # Python dependencies
+└── uv.lock                 # Dependency lock file for uv
+```
 
 ## Troubleshooting
 
-If you encounter errors while installing the dependencies from `requirements.txt`, try installing the packages individually using the following commands:
+### OpenAI API Errors
 
+If you get authentication errors:
+- Verify your `.env` file exists and contains a valid `OPENAI_API_KEY`
+- Make sure your OpenAI API key has sufficient credits
+- Check that the API key doesn't have any extra spaces or quotes
+
+### Dependency Installation Issues
+
+If you encounter errors while installing dependencies:
+
+1. **Using uv (recommended):**
 ```bash
-pip install openai
-pip install streamlit
-pip install streamlit-chat
+uv pip install -r requirements.txt
 ```
 
-Then, export your OpenAI API Key and run the chatbot:
+2. **Using pip individually:**
 ```bash
-export OPENAI_API_KEY=<your secret key>
-streamlit run chatbot.py
-```
-Remember to replace `<your secret key>` with your actual OpenAI API Key.
-
-
-## Directory Tree
-```
-├── images
-│   ├── openai.png
-│   ├── streamlit.jpg
-├── .gitignore
-├── chatbot.py
-├── config.py
-├── utils.py
-├── requirements.txt
-└── README.md
+pip install openai>=2.8.1
+pip install python-dotenv>=1.2.1
+pip install streamlit>=1.51.0
+pip install streamlit-chat>=0.1.1
 ```
 
 ## Bug / Feature Request
@@ -179,4 +250,21 @@ If you'd like to request a new function, feel free to do so by opening an issue 
 
 ## Technologies Used
 
-<img src="images/openai.png" width="125"/><img src="images/streamlit.jpg" width="210"/> 
+- **OpenAI GPT Models** (gpt-4o-mini by default) - For recipe generation and evaluation
+- **Streamlit** - Web application framework for the chatbot interface
+- **Python 3.11+** - Programming language
+- **python-dotenv** - Environment variable management
+- **streamlit-chat** - Chat UI components
+- **uv** - Fast Python package installer and resolver
+
+<img src="images/openai.png" width="125"/><img src="images/streamlit.jpg" width="210"/>
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+**Nehal Vaghasiya**
+- GitHub: [@nehalvaghasiya](https://github.com/nehalvaghasiya)
+- Email: nehal.vaghasiya777@gmail.com 
