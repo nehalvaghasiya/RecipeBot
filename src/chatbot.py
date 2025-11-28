@@ -1,8 +1,13 @@
 import uuid
+
+from dotenv import load_dotenv
 import streamlit as st
 from streamlit_chat import message
 from utils import get_completion
 from config import Parameters
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class RecipeBot:
@@ -34,7 +39,7 @@ class RecipeBot:
         if answer:
             self.session_state['answers'].append((answer, self._generate_uuid()))
             self.session_state['recipe_step'] += 1
-            st.experimental_rerun()
+            st.rerun()
 
     def display_past_questions_and_answers(self) -> None:
         """Display previous questions and answers."""

@@ -1,5 +1,12 @@
+import os
+
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 class Parameters:
-    MODEL = "gpt-3.5-turbo" #gpt4-8k
+    MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")  # OpenAI model name - configurable via environment variable
 
     RECIPE_GENERATOR_PROMPT = """ The following is the preference of User:
     {user_prefs}
